@@ -7,27 +7,37 @@ intrinsic RamanujanSum(d::RngIntElt, j::RngIntElt) -> RngIntElt
     return MoebiusMu(x)*ExactQuotient(EulerPhi(d),EulerPhi(x));
 end intrinsic;
 
-intrinsic IsGaussCongruence(X::UserProgram, n_max::RngIntElt) -> BoolElt, SeqEnum[RngIntElt]
-{Tests where the values of X satisfy the Gauss congruence for n. If so, return the Lyndon parameters}
-    require n_max ge 1: "maximumn n value must be positive";
-    require &and[Type(X(n)) eq RngIntElt : n in [1..n_max]]: "X must return integer values";
-    params := [0 : n in [1..n_max]];
-    for n in [1..n_max] do
-        bn := &+[MoebiusMu(ExactQuotient(n,d))*X(d) : d in Divisors(n)];
-        if bn mod n eq 0 then
-            params[n] := ExactQuotient(bn, n);
-        else
+intrinsic IsGaussCongruence(X::[RngIntElt]) -> BoolElt
+{Check whether the values of X satisfy the Gauss congruence}
+    for n in [1..#X] do
+        if not &+[MoebiusMu(ExactQuotient(n,d))*X[d] : d in Divisors(n)] mod n eq 0 then
             return false;
         end if;
     end for;
-    return true, params;
+    // If passes all checks return true
+    return true;
 end intrinsic;
 
-intrinsic IsGaussCongruenceFull(X::UserProgram, n::RngIntElt) -> BoolElt
-{Tests where the values of X satisfy the Gauss congruence for n and all values of the Ramanujan sum}
-    require n ge 1: "n must be positive";
-    require &and[Type(X(d)) eq RngIntElt : d in Divisors(n)]: "X must return integer values";
-    return &and[&+[RamanujanSum(ExactQuotient(n,d),j)*X(d) : d in Divisors(n)] mod n eq 0 : j in Divisors(n)];
+intrinsic IsGaussCongruence(X::[RngIntElt], j::RngInt) -> BoolElt
+{Check whether the values of X satisfy the Ramanujan-sum Gauss congruence at j}
+    for n in [1..#X] do
+        if not &+[RamanujanSum(ExactQuotient(n,d), j)*X[d] : d in Divisors(n)] mod n eq 0 then
+            return false;
+        end if;
+    end for;
+    // If passes all checks return true
+    return true;
+end intrinsic;
+
+intrinsic LyndonParameters(X::[RngIntElt]) -> SeqEnum[RngIntElt]
+{Given the Lyndon structure counts, return the Lyndon parameters}
+    require IsGaussCongruence(X): "Values of X must be Gauss-congruent";
+    return [ExactQuotient(&+[MoebiusMu(ExactQuotient(n,d))*X[d] : d in Divisors(n)], n) : n in [1..#X]];
+end intrinsic;
+
+intrinsic LyndonSizesFromParameters(B::[RngIntElt]) -> SeqEnum[RngIntElt]
+{Given a sequence of Lyndon parameters, determine the sizes for the Lyndon structure}
+    return [&+[d*B[d] : d in Divisors(n)] : n in [1..#B]];
 end intrinsic;
 
 // Given a subset of k-1 bars in n+k-1 objects, return the composition of n
@@ -54,47 +64,51 @@ intrinsic Compositions(n::RngIntElt, k::RngIntElt) -> SetEnum[SeqEnum[RngIntElt]
     return {[y + 1 : y in x] : x in WeakCompositions(n-k, k)};
 end intrinsic;
 
-intrinsic ColouredCyclicCompositions(c::UserProgram, n::RngIntElt) -> RngIntElt
-{Return the number of coloured cyclic compositions of size n coloured by c}
-    require n ge 1: "n must be positive";
-    cols := [c(m) : m in [1..n]];
-    require &and[Type(col) eq RngIntElt : col in cols]: "c must return integer values";
+intrinsic ColouredCyclicCompositions(C::[RngIntElt], n::RngIntElt, k::RngIntElt) -> RngIntElt
+{Return the number of coloured cyclic compositions of n into k parts coloured by C}
+    require n le #C: "n must be less than the length of colours provided";
+    require 1 le k and k le n: "k must be between 1 and n";
     x := 0;
-    for k in [1..n] do
-        for alpha in Compositions(n,k) do
-            x +:= alpha[1]*&*[cols[alpha[i]] : i in [1..k]];
-        end for;
+    for a in Compositions(n,k) do
+        x +:= a[1]*&*[C[a[i]] : i in [1..k]];
     end for;
     return x;
 end intrinsic;
 
-intrinsic ColouredCyclicCompositions(c::UserProgram, n::RngIntElt, k::RngIntElt) -> RngIntElt
-{Return the number of coloured cyclic compositions of size n coloured by c}
-    require n ge 1 and k ge 1 and n ge k: "k must be between 1 and n";
-    cols := [c(m) : m in [1..n]];
-    require &and[Type(col) eq RngIntElt : col in cols]: "c must return integer values";
-    x := 0;
-    for alpha in Compositions(n,k) do
-        x +:= alpha[1]*&*[cols[alpha[i]] : i in [1..k]];
-    end for;
-    return x;
+intrinsic ColouredCyclicCompositions(C::[RngIntElt], n::RngIntElt) -> RngIntElt
+{Return the number of coloured cyclic compositions of n coloured by C}
+    require n le #C: "n must be less than the length of colours provided";
+    return &+[ColouredCyclicCompositions(C,n,k) : k in [1..n]];
 end intrinsic;
 
-intrinsic IsLyndonStructure(X::UserProgram, max_n::RngIntElt) -> BoolElt, SeqEnum[RngIntElt]
-{If X counts a Lyndon structure up to max_n, return true and the colour values. Else, return false}
-    require max_n ge 1: "maximum n value must be positive";
-    require &and[Type(X(n)) eq RngIntElt : n in [1..max_n]]: "X must return integer values";
-    // Create array of irreducible counts, initially zero
-    cols := [0 : n in [1..max_n]];
-    cols[1] := X(1);
-    for n in [2..max_n] do
+intrinsic LyndonSizesFromColours(C::[RngIntElt]) -> RngIntElt
+{Return the number of coloured cyclic compositions coloured by C}
+    return [ColouredCyclicCompositions(C,n) : n in [1..#C]];
+end intrinsic;
+
+intrinsic LyndonColours(X::[RngIntElt]) -> SeqEnum[RngIntElt]
+{Find colouring function so that X which induces the counts of X as a Lyndon structure}
+    // Create array of colour counts, initially zero
+    cols := [0 : n in [1..#X]];
+    cols[1] := X[1];
+    for n in [2..#X] do
         // Find all coloured cyclic compositions made from smaller parts, then subtract from X(n) and divide by n
-        new_elts := (X(n) - &+[&+[alpha[1]*&*[cols[alpha[i]] : i in [1..#alpha]] : alpha in Compositions(n,k)] : k in [2..n]]);
-        if new_elts mod n eq 0 then
-            cols[n] := ExactQuotient(new_elts,n);
-        else
-            return false;
-        end if;
+        new_elts := (X[n] - &+[&+[alpha[1]*&*[cols[alpha[i]] : i in [1..#alpha]] : alpha in Compositions(n,k)] : k in [2..n]]);
+        require new_elts mod n eq 0: "The values of X must count a coloured cyclic composition";
+        cols[n] := ExactQuotient(new_elts,n);
     end for;
-    return true, cols;
+    return cols;
+end intrinsic;
+
+intrinsic LyndonPolynomials(X::[RngIntElt]) -> SeqEnum[RngUPolElt]
+{Return the reduced polynomials which give a CSP with X}
+    R<q> := PolynomialRing(Integers());
+    // Array to store the polynomials
+    polys := [Zero(R) : x in [1..#X]];
+    for n in [1..#X] do
+        j_params := [&+[RamanujanSum(ExactQuotient(n,d), j)*X[d] : d in Divisors(n)] : j in [0..n-1]];
+        require &and([p mod n eq 0 : p in j_params]): "X must be fully Gauss congruent";
+        polys[n] := &+[ExactQuotient(j_params[j],n) * q^(j-1) : j in [1..n]];
+    end for;
+    return polys;
 end intrinsic;
