@@ -9,6 +9,16 @@ intrinsic QNumber(n :: RngIntElt) -> RngUPolElt
     return &+[q^i : i in [0..n-1]];
 end intrinsic;
 
+intrinsic QFactorial := function(n :: RngIntElt) -> RngUPolElt
+{Return the q-factorial [n]_q!=[1]_q...[n]_q}
+    R<q> := PolynomialRing(Integers());
+    if n le 0 then
+        return Zero(R);
+    end if;
+    qnums := [&+[q^i : i in [0..m-1]] : m in [1..n]];
+    return &*qnums;
+end intrinsic;
+
 intrinsic QMultinomial(a :: [RngIntElt]) -> RngUPolElt
 {Return the q-multinomial [a_1,a_2,...]_q!=[a_1+a_2+...]_q/([a_1]_q[a_2]_q...)}
     R<q> := PolynomialRing(Integers());
@@ -25,12 +35,8 @@ intrinsic QMultinomial(a :: [RngIntElt]) -> RngUPolElt
     return Numerator(qmult);
 end intrinsic;
 
-intrinsic QFactorial(n :: RngIntElt) -> RngUPolElt
-{Return the q-factorial [n]_q!=[1]_q...[n]_q}
-    return QMultinomial([n]);
-end intrinsic;
-
 intrinsic QBinomial(n :: RngIntElt, k :: RngIntElt) -> RngUPolElt
 {Return the q-binomial [(n,k)]_q!=([n]_q...[n-k+1]_q)/([k]_q...[1]_q)}
     return QMultinomial([k,n-k]);
 end intrinsic;
+
