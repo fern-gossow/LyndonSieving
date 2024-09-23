@@ -7,11 +7,20 @@ intrinsic RamanujanSum(d::RngIntElt, j::RngIntElt) -> RngIntElt
     return MoebiusMu(x)*ExactQuotient(EulerPhi(d),EulerPhi(x));
 end intrinsic;
 
-intrinsic IsGaussCongruence(X::UserProgram, n::RngIntElt) -> BoolElt
-{Tests where the values of X satisfy the Gauss congruence for n, i.e. Sum(mu(n/d)X(d),d|n)=0 (mod n)}
-    require n ge 1: "n must be positive";
-    require &and[Type(X(d)) eq RngIntElt : d in Divisors(n)]: "X must return integer values";
-    return &+[MoebiusMu(ExactQuotient(n,d))*X(d) : d in Divisors(n)] mod n eq 0;
+intrinsic IsGaussCongruence(X::UserProgram, n_max::RngIntElt) -> BoolElt, SeqEnum[RngIntElt]
+{Tests where the values of X satisfy the Gauss congruence for n. If so, return the Lyndon parameters}
+    require n_max ge 1: "maximumn n value must be positive";
+    require &and[Type(X(n)) eq RngIntElt : n in [1..n_max]]: "X must return integer values";
+    params := [0 : n in [1..n_max]];
+    for n in [1..n_max] do
+        bn := &+[MoebiusMu(ExactQuotient(n,d))*X(d) : d in Divisors(n)];
+        if bn mod n eq 0 then
+            params[n] := ExactQuotient(bn, n);
+        else
+            return false;
+        end if;
+    end for;
+    return true, params;
 end intrinsic;
 
 intrinsic IsGaussCongruenceFull(X::UserProgram, n::RngIntElt) -> BoolElt
