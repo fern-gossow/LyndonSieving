@@ -50,7 +50,8 @@ end intrinsic;
 intrinsic TestLyndonFamily(f :: UserProgram, rk :: RngIntElt, s :: [RngIntElt]) -> BoolElt
 {Given a polynomial family indexed by s and given rank, test the Lyndon family condition by substituting roots of unity}
     require rk ge 1: "Rank must be positive";
-    s_divisors := &meet[Set(Divisors(a)) : a in s];
+    require &and[a ge 0 : a in s] : "Elements of s must be nonnegative";
+    s_divisors := &meet[Set(Divisors(a)) : a in s | a gt 0];
     require s_divisors subset Divisors(rk) : "Divisors of s must be divisors of rk";
     for d in s_divisors do
         require Type(f([ExactQuotient(a,d) : a in s])) eq RngUPolElt: "Outputs of f must be integer polynomials";

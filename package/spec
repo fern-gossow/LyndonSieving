@@ -1,4 +1,5 @@
 LyndonSieving
 {
-    polynomials.m;
+    polynomials.m
+    structures.m
 }
