@@ -83,21 +83,31 @@ end intrinsic;
 
 intrinsic LyndonSizesFromColours(C::[RngIntElt]) -> RngIntElt
 {Return the number of coloured cyclic compositions coloured by C}
-    return [ColouredCyclicCompositions(C,n) : n in [1..#C]];
+    // Array for storing the values of X
+    X := [0 : c in [1..#C]];
+    for n in [1..#C] do
+        // Recursive formula for computation
+        x := n*C[n];
+        for m in [1..n-1] do
+            x +:= X[m]*C[n-m];
+        end for;
+        X[n] := x;
+    end for;
+    return X;
 end intrinsic;
 
 intrinsic LyndonColours(X::[RngIntElt]) -> SeqEnum[RngIntElt]
 {Find colouring function so that X which induces the counts of X as a Lyndon structure}
     // Create array of colour counts, initially zero
-    cols := [0 : n in [1..#X]];
-    cols[1] := X[1];
+    C := [0 : n in [1..#X]];
+    C[1] := X[1];
     for n in [2..#X] do
         // Find all coloured cyclic compositions made from smaller parts, then subtract from X(n) and divide by n
-        new_elts := (X[n] - &+[&+[alpha[1]*&*[cols[alpha[i]] : i in [1..#alpha]] : alpha in Compositions(n,k)] : k in [2..n]]);
+        new_elts := (X[n] - &+[X[m]*C[n-m] : m in [1..n-1]]);
         require new_elts mod n eq 0: "The values of X must count a coloured cyclic composition";
-        cols[n] := ExactQuotient(new_elts,n);
+        C[n] := ExactQuotient(new_elts,n);
     end for;
-    return cols;
+    return C;
 end intrinsic;
 
 intrinsic LyndonPolynomials(X::[RngIntElt]) -> SeqEnum[RngUPolElt]

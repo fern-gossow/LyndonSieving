@@ -47,6 +47,20 @@ intrinsic TestLyndonFamily(f :: UserProgram, n :: RngIntElt) -> BoolElt
     return &and[Evaluate(f(n), z^d) eq Evaluate(f(d), One(A)) : d in Divisors(n)];
 end intrinsic;
 
+intrinsic IsLyndonFamily(F::[RngUPolElt]) -> BoolElt
+{Given a sequence of polynomialss, test the Lyndon family condition by substituting roots of unity}
+    for n in [1..#F] do
+        // Substitute powers of the nth root of unity
+        A<z> := CyclotomicField(n);
+        for d in Divisors(n) do
+            if not Evaluate(F[n], z^d) eq Evaluate(F[d], One(A)) then
+                return false;
+            end if;
+        end for;
+    end for;
+    return true;
+end intrinsic;
+
 intrinsic TestLyndonFamily(f :: UserProgram, rk :: RngIntElt, s :: [RngIntElt]) -> BoolElt
 {Given a polynomial family indexed by s and given rank, test the Lyndon family condition by substituting roots of unity}
     require rk ge 1: "Rank must be positive";
