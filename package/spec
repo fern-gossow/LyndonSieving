@@ -1,4 +1,4 @@
 LyndonSieving
 {
-    LyndonPolynomials.m;
+    polynomials.m;
 }
