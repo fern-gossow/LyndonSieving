@@ -6,3 +6,6 @@ S,QBinomial,"Return the q-binomial [(n,k)]_q!=([n]_q...[n-k+1]_q)/([k]_q...[1]_q
 S,TestLyndonFamily,"Given a polynomial family f_n (as f(n)=f_n), test the Lyndon family condition by substituting roots of unity",0,2,0,0,0,0,0,0,0,148,,0,0,41,,36,-38,-38,-38,-38
 S,IsLyndonFamily,"Given a sequence of polynomialss, test the Lyndon family condition by substituting roots of unity",1,0,1,82,0,312,1,0,0,0,0,0,0,0,82,,36,-38,-38,-38,-38
 S,TestLyndonFamily,"Given a polynomial family indexed by s and given rank, test the Lyndon family condition by substituting roots of unity",1,2,1,82,0,148,3,0,0,0,0,0,0,0,82,,0,0,148,,0,0,41,,36,-38,-38,-38,-38
+S,ReducePolynomial,"Reduce a polynomial mod q^n, but keep it in the integer ring",0,2,0,0,0,0,0,0,0,148,,0,0,312,,312,-38,-38,-38,-38
+S,ReducePolynomialFamily,"Reduce a sequence of polynomials, where F[n] is reduced mod q^n-1",1,0,1,82,0,312,1,0,0,0,0,0,0,0,82,,82,-38,-38,-38,-38
+S,LyndonSizesFromPolynomials,Return the evaluations of the polynomial family at q = 1,1,0,1,82,0,312,1,0,0,0,0,0,0,0,82,,82,-38,-38,-38,-38
