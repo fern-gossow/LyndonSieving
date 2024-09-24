@@ -2,4 +2,5 @@ LyndonSieving
 {
     polynomials.m
     structures.m
+    words.m
 }
