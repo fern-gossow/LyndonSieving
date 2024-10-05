@@ -1,4 +1,4 @@
-// Construct and test Lyndon families of polynomials
+// Construct q-analogues of binomial coefficients, and reduce polynomials mod [n]_q by summing over coefficients
 
 intrinsic QNumber(n :: RngIntElt) -> RngUPolElt
 {Return the q-analogue [n]_q=1+q+...+q^(n-1)}

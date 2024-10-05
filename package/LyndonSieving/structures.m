@@ -33,10 +33,10 @@ intrinsic IsGaussCongruence(F::[RngUPolElt]) -> BoolElt
     return true;
 end intrinsic;
 
-intrinsic IsGaussCongruence(X::[RngIntElt], j::RngInt) -> BoolElt
+intrinsic IsGaussCongruence(A::[RngIntElt], j::RngInt) -> BoolElt
 {Check whether the sequence satisfies the Ramanujan-sum-adjusted Gauss congruence at j}
-    for n in [1..#X] do
-        if not &+[RamanujanSum(ExactQuotient(n,d), j)*X[d] : d in Divisors(n)] mod n eq 0 then
+    for n in [1..#A] do
+        if not &+[RamanujanSum(ExactQuotient(n,d), j)*A[d] : d in Divisors(n)] mod n eq 0 then
             return false;
         end if;
     end for;
@@ -47,7 +47,7 @@ end intrinsic;
 intrinsic LyndonParameters(A::[RngIntElt]) -> SeqEnum[RngIntElt]
 {Given a sequence satisfying Gauss congruence, return the Lyndon parameters B}
     require IsGaussCongruence(A): "Values of A must satisfy Gauss congruence";
-    return [ExactQuotient(&+[MoebiusMu(ExactQuotient(n,d))*A[d] : d in Divisors(n)], n) : n in [1..#X]];
+    return [ExactQuotient(&+[MoebiusMu(ExactQuotient(n,d))*A[d] : d in Divisors(n)], n) : n in [1..#A]];
 end intrinsic;
 
 intrinsic LyndonSizesFromParameters(B::[RngIntElt]) -> SeqEnum[RngIntElt]
@@ -71,38 +71,23 @@ intrinsic LyndonSizesFromColours(C::[RngIntElt]) -> RngIntElt
 {Return the (signed) count of festoons of each length coloured by C}
     // Create array of A values
     A := [0 : c in [1..#C]];
-    for n in [1..#C] do
-        A[n] = n*C[n] + &+[A[m]*C[n-m] : m in [1..n-1]]
+    A[1] := C[1];
+    for n in [2..#C] do
+        A[n] := n*C[n] + &+[A[m]*C[n-m] : m in [1..n-1]];
     end for;
-    return X;
+    return A;
 end intrinsic;
 
 intrinsic LyndonPolynomials(A::[RngIntElt]) -> SeqEnum[RngUPolElt]
 {Given a sequence satisfying Gauss congruence, return the associated sequence of reduced polynomials satisfying q-Gauss congruence}
     require IsGaussCongruence(A): "Values of A must satisfy Gauss congruence";
     B := LyndonParameters(A);
-    return &+[B[d]*Evaluate(QNumber(d),q^ExactQuotient(n,d)) : d in Divisors(n)];
+    R<q> := PolynomialRing(Integers());
+    return [&+[B[d]*Evaluate(QNumber(d),q^ExactQuotient(n,d)) : d in Divisors(n)] : n in [1..#A]];
 end intrinsic;
 
-intrinsic LyndonSizesFromPolynomials(F::[RngUPolElt])
+intrinsic LyndonSizesFromPolynomials(F::[RngUPolElt]) -> SeqEnum[RngIntElt]
 {Given a sequence of polynomials satisfying q-Gauss congruence, return their evaluations at q=1}
     require IsGaussCongruence(F): "Values of F must satisfy q-Gauss congruence";
     return [Evaluate(f,1) : f in F];
-end intrinsic;
-
-intrinsic ColouredCyclicCompositions(C::[RngIntElt], n::RngIntElt, k::RngIntElt) -> RngIntElt
-{Return the number of coloured cyclic compositions of n into k parts coloured by C}
-    require n le #C: "n must be less than the length of colours provided";
-    require 1 le k and k le n: "k must be between 1 and n";
-    x := 0;
-    for a in Compositions(n,k) do
-        x +:= a[1]*&*[C[a[i]] : i in [1..k]];
-    end for;
-    return x;
-end intrinsic;
-
-intrinsic ColouredCyclicCompositions(C::[RngIntElt], n::RngIntElt) -> RngIntElt
-{Return the number of coloured cyclic compositions of n coloured by C}
-    require n le #C: "n must be less than the length of colours provided";
-    return &+[ColouredCyclicCompositions(C,n,k) : k in [1..n]];
 end intrinsic;

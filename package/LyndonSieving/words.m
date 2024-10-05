@@ -50,7 +50,7 @@ end function;
 
 intrinsic WeakCompositions(n::RngIntElt, k::RngIntElt) -> SetEnum[SeqEnum[RngIntElt]]
 {Returns all nonnegative compositions of n with length k}
-    require n ge 0: "n must be positive";
+    require n gt 0: "n must be positive";
     require k ge 0: "k must be nonnegative";
     return {SubsetToComposition(set, n+k-1) : set in Subsets({1..n+k-1},k-1)};
 end intrinsic;
