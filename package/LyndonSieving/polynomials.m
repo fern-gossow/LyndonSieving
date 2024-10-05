@@ -43,7 +43,7 @@ intrinsic ReducePolynomial(f::RngUPolElt, n::RngIntElt) -> RngUPolElt
     return &+[&+[Coefficient(f,m*n+j) : m in [0..Round(Degree(f)/n)+1]]*q^j : j in [0..n-1]];
 end intrinsic;
 
-intrinsic ReducePolynomialFamily(F::[RngUPolElt]) -> SeqEnum[RngUPolElt]
+intrinsic ReducePolynomialSequence(F::[RngUPolElt]) -> SeqEnum[RngUPolElt]
 {Reduce a sequence of polynomials, where F[n] is reduced mod q^n-1}
     return [ReducePolynomial(F[n], n) : n in [1..#F]];
 end intrinsic;
