@@ -40,7 +40,7 @@ If $c_n$ takes negative values, then $a_n$ represents a signed count of these fe
 ### LyndonSieving package
 
 The MAGMA package is split up into three files:
-- `structure.m` provides intrinsics for translating between the families $\\{a_n\}$, $\\{b_n\\}$, $\\{c_n\\}$ and $\\{f_n\\}$, as well as checking whether a given sequence of integers or integer polynomials satisfies the Gauss congruence. These families should always be represented as a sequence of values, where the first element corresponds to $n=1$.
+- `structure.m` provides intrinsics for translating between the families $\\{a_n\\}$, $\\{b_n\\}$, $\\{c_n\\}$ and $\\{f_n\\}$, as well as checking whether a given sequence of integers or integer polynomials satisfies the Gauss congruence. These families should always be represented as a sequence of values, where the first element corresponds to $n=1$.
 - `polynomials.m` assists in the computation of polynomials which are commonly related to the $q$-Gauss congruence, such as the $q$-binomial coefficients. Given a sequence of polynomials, the function `ReducePolynomialSequence` maps
 
 $$[f_1,f_2,\dots,f_n]\mapsto [f_1\pmod{[1]_q},f_2\pmod{[2]_q},\dots,f_n\pmod{[n]_q}]$$
