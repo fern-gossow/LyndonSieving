@@ -9,11 +9,11 @@ The MAGMA package and spec file is contained in the folder *LyndonSieving*, and 
 
 We begin by defining Lyndon-like cyclic sieving for families indexed by the positive integers, and explain their connection to Gauss congruence.
 
-Let $X=\{X_n\}$ be a family of finite sets each equipped with a group action of $C_n$. Suppose moreover that for every $d\mid n$, the number of elements in $X_n$ which are fixed by the action of the subgroup $C_d\leq C_n$ for every $d\mid n$ is $\#X_{n/d}$. This is a fairly strict condition, but it naturally arises in the study of necklaces and words under rotation.
+Let $X=\{X_n\}$ be a family of finite sets each equipped with a group action of $C_n$. Suppose moreover that for every $d\mid n$, the number of elements in $X_n$ which are fixed by the action of the subgroup $C_d\leq C_n$ for every $d\mid n$ is $|X_{n/d}|$. This is a fairly strict condition, but it naturally arises in the study of necklaces and words under rotation.
 
-For each $n$, suppose we can find a integer polynomial $f_n(q)$ such that $f_n(\omega_d)=\#X_{n/d}$ for every $d\mid n$, where $\omega_d$ is a primitive $d^\text{th}$ root of unity. Then the triple $(X_n,C_n,f_n)$ is a _cyclic sieving triple_, since evaluations at roots of unity count fixed points under the associated subgroup action. Given such a family of polynomials $\{f_n\}$, we say the family of triples $\{(X_n,C_n,f_n)\}$ exhibit the _Lyndon-like cyclic sieving phenomenon_.
+For each $n$, suppose we can find a integer polynomial $f_n(q)$ such that $f_n(\omega_d)=|X_{n/d}|$ for every $d\mid n$, where $\omega_d$ is a primitive $d^\text{th}$ root of unity. Then the triple $(X_n,C_n,f_n)$ is a _cyclic sieving triple_, since evaluations at roots of unity count fixed points under the associated subgroup action. Given such a family of polynomials $\{f_n\}$, we say the family of triples $\{(X_n,C_n,f_n)\}$ exhibit the _Lyndon-like cyclic sieving phenomenon_.
 
-If this is the case, we have $f_n(1)=\#X_n$ and $f_n(\omega_d)=f_{n/d}(1)$ for every $d\mid n$. This second condition is equivalent to $q$-Gauss congruence on $f_n(q)$, i.e. that the polynomials satisfy
+If this is the case, we have $f_n(1)=|X_n|$ and $f_n(\omega_d)=f_{n/d}(1)$ for every $d\mid n$. This second condition is equivalent to $q$-Gauss congruence on $f_n(q)$, i.e. that the polynomials satisfy
 $$\sum_{d\mid n}\mu(d)f_{n/d}(q^d)\equiv 0\pmod{[n]_q},$$
 where $\mu$ is the Möbius function and $[n]_q:=1+q+\cdots+q^{n-1}$. By substituting $q\mapsto 1$, this in turn implies that the values $a_n:=\#X_n$ enumerating the families satisfy the Gauss congruence:
 $$\sum_{d\mid n}\mu(d)a_{n/d}\equiv 0\pmod{n}.$$
