@@ -17,7 +17,7 @@ If this is the case, we have $f_n(1)=|X_n|$ and $f_n(\omega_d)=f_{n/d}(1)$ for e
 
 $$\sum_{d\mid n}\mu(d)f_{n/d}(q^d)\equiv 0\pmod{[n]_q},$$
 
-where $\mu$ is the Möbius function and $[n]_q:=1+q+\cdots+q^{n-1}$. By substituting $q\mapsto 1$, this in turn implies that the values $a_n:=\#X_n$ enumerating the families satisfy the Gauss congruence:
+where $\mu$ is the Möbius function and $[n]_q:=1+q+\cdots+q^{n-1}$. By substituting $q\mapsto 1$, this in turn implies that the values $a_n:=|X_n|$ enumerating the families satisfy the Gauss congruence:
 
 $$\sum_{d\mid n}\mu(d)a_{n/d}\equiv 0\pmod{n}.$$
 
