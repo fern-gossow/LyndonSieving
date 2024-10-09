@@ -43,7 +43,7 @@ The MAGMA package is split up into three files:
 - `structure.m` provides intrinsics for translating between the families $\\{a_n\\}$, $\\{b_n\\}$, $\\{c_n\\}$ and $\\{f_n\\}$, as well as checking whether a given sequence of integers or integer polynomials satisfies the Gauss congruence. These families should always be represented as a sequence of values, where the first element corresponds to $n=1$.
 - `polynomials.m` assists in the computation of polynomials which are commonly related to the $q$-Gauss congruence, such as the $q$-binomial coefficients. Given a sequence of polynomials, the function `ReducePolynomialSequence` maps
 
-$$[f_1,f_2,\dots,f_n]\mapsto [f_1\pmod{[1]_q},f_2\pmod{[2]_q},\dots,f_n\pmod{[n]_q}]$$
+$$[f_1,f_2,\dots,f_n]\mapsto [f_1\text{ mod}([1]_q),f_2\text{ mod}([2]_q),\dots,f_n\text{ mod}([n]_q)]$$
 
 which is useful for quickly checking whether two polynomial sequences correspond to the same Lyndon structure.
 - `words.m` calculates the major index polynomial for a set of words (represented as integer sequences), as well as the $q$-analogue of the exponential function defined in the paper, giving another common class of $q$-Gauss congruences.
