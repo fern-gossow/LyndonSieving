@@ -1,3 +1,4 @@
+freeze;
 // Intrinsics for words, rotations, major index and the q-exponential
 
 intrinsic MajorIndex(w::[RngIntElt]) -> RngIntElt

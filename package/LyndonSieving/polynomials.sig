@@ -1,4 +1,4 @@
-166,0
+166,1
 S,QNumber,Return the q-analogue [n]_q=1+q+...+q^(n-1),0,1,0,0,0,0,0,0,0,148,,312,-38,-38,-38,-38
 S,QFactorial,Return the q-factorial [n]_q!=[1]_q...[n]_q,0,1,0,0,0,0,0,0,0,148,,312,-38,-38,-38,-38
 S,QMultinomial,"Return the q-multinomial [a_1,a_2,...]_q!=[a_1+a_2+...]_q/([a_1]_q[a_2]_q...)",1,0,1,82,0,148,1,0,0,0,0,0,0,0,82,,312,-38,-38,-38,-38

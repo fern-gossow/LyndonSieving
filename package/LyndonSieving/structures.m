@@ -1,3 +1,4 @@
+freeze;
 // Functions for constructing Lyndon structures and coloured cyclic compositions
 
 intrinsic RamanujanSum(d::RngIntElt, j::RngIntElt) -> RngIntElt

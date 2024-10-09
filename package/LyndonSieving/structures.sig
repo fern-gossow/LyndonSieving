@@ -1,4 +1,4 @@
-166,0
+166,1
 S,RamanujanSum,"Return the Ramanujan sum c_j(d), sum of the jth powers of dth primitve roots of unity",0,2,0,0,0,0,0,0,0,148,,0,0,148,,148,-38,-38,-38,-38
 S,IsGaussCongruence,Check whether an integer sequence satisfies the Gauss congruence,1,0,1,82,0,148,1,0,0,0,0,0,0,0,82,,36,-38,-38,-38,-38
 S,IsGaussCongruence,Check whether an intege polynoimal sequence satisfies the q-Gauss congruence,1,0,1,82,0,312,1,0,0,0,0,0,0,0,82,,36,-38,-38,-38,-38

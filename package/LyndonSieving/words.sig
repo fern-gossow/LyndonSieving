@@ -1,4 +1,4 @@
-166,0
+166,1
 S,MajorIndex,Returns the major index of a word,1,0,1,82,0,148,1,0,0,0,0,0,0,0,82,,148,-38,-38,-38,-38
 S,MajorIndex,Returns the major index of a word,1,0,1,82,0,148,1,0,0,0,0,0,0,0,82,,148,-38,-38,-38,-38
 S,MajorIndexPolynomial,Returns the major index polynomial of a set of words,1,0,1,83,1,82,0,148,1,0,0,0,0,0,0,0,83,,312,-38,-38,-38,-38

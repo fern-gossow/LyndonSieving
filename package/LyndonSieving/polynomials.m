@@ -1,3 +1,4 @@
+freeze;
 // Construct q-analogues of binomial coefficients, and reduce polynomials mod [n]_q by summing over coefficients
 
 intrinsic QNumber(n :: RngIntElt) -> RngUPolElt
